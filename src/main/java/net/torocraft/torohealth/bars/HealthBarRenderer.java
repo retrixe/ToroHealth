@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -29,7 +30,7 @@ import org.lwjgl.opengl.GL11;
 
 public class HealthBarRenderer {
 
-  private static final Identifier GUI_BARS_TEXTURES = new Identifier(ToroHealth.MODID + ":textures/gui/bars.png");
+  private static final Identifier GUI_BARS_TEXTURES = Identifier.of(ToroHealth.MODID + ":textures/gui/bars.png");
   private static final int DARK_GRAY = 0x808080;
   private static final float FULL_SIZE = 40;
 
@@ -101,7 +102,7 @@ public class HealthBarRenderer {
       boolean sneaking = entity.isInSneakingPose();
       float height = entity.getHeight() + 0.6F - (sneaking ? 0.25F : 0.0F);
 
-      float tickDelta = client.getTickDelta();
+      float tickDelta = client.getRenderTickCounter().getTickDelta(true);
       double x = MathHelper.lerp((double) tickDelta, entity.prevX, entity.getX());
       double y = MathHelper.lerp((double) tickDelta, entity.prevY, entity.getY());
       double z = MathHelper.lerp((double) tickDelta, entity.prevZ, entity.getZ());
@@ -201,16 +202,15 @@ public class HealthBarRenderer {
     float zOffsetAmount = inWorld ? -0.1F : 0.1F;
 
     Tessellator tessellator = Tessellator.getInstance();
-    BufferBuilder buffer = tessellator.getBuffer();
-    buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+    BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
     buffer.vertex(matrix4f, (float) (-half + x), (float) y, zOffset * zOffsetAmount)
-        .texture(u * c, v * c).next();
+        .texture(u * c, v * c);
     buffer.vertex(matrix4f, (float) (-half + x), (float) (h + y), zOffset * zOffsetAmount)
-        .texture(u * c, (v + vh) * c).next();
+        .texture(u * c, (v + vh) * c);
     buffer.vertex(matrix4f, (float) (-half + size + x), (float) (h + y), zOffset * zOffsetAmount)
-        .texture((u + uw) * c, (v + vh) * c).next();
+        .texture((u + uw) * c, (v + vh) * c);
     buffer.vertex(matrix4f, (float) (-half + size + x), (float) y, zOffset * zOffsetAmount)
-        .texture(((u + uw) * c), v * c).next();
-    tessellator.draw();
+        .texture(((u + uw) * c), v * c);
+    BufferRenderer.drawWithGlobalProgram(buffer.end());
   }
 }

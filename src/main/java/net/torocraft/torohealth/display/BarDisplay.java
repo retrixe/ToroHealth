@@ -11,8 +11,8 @@ import net.torocraft.torohealth.bars.HealthBarRenderer;
 
 public class BarDisplay {
 
-  private static final Identifier ARMOR_TEXTURE = new Identifier("hud/armor_full");
-  private static final Identifier HEART_TEXTURE = new Identifier("hud/heart/full");
+  private static final Identifier ARMOR_TEXTURE = Identifier.of("hud/armor_full");
+  private static final Identifier HEART_TEXTURE = Identifier.of("hud/heart/full");
   private final MinecraftClient mc;
 
   public BarDisplay(MinecraftClient mc) {
