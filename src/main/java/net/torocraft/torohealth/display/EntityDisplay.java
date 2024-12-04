@@ -12,6 +12,7 @@ import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import org.joml.Matrix4fStack;
 import org.joml.Quaternionf;
 
 public class EntityDisplay {
@@ -74,9 +75,9 @@ public class EntityDisplay {
       float mouseY, LivingEntity entity, float scale) {
     float f = (float) Math.atan((double) (mouseX / 40.0F));
     float g = (float) Math.atan((double) (mouseY / 40.0F));
-    MatrixStack matrixStack = RenderSystem.getModelViewStack();
-    matrixStack.push();
-    matrixStack.translate((double) x * scale, (double) y * scale, 1050.0D * scale);
+    Matrix4fStack matrixStack = RenderSystem.getModelViewStack();
+    matrixStack.pushMatrix();
+    matrixStack.translate(x * scale, y * scale, 1050.0F * scale);
     matrixStack.scale(1.0F, 1.0F, -1.0F);
     RenderSystem.applyModelViewMatrix();
     matrixStack2.push();
@@ -114,7 +115,7 @@ public class EntityDisplay {
     entity.setPitch(j);
     entity.prevHeadYaw = k;
     entity.headYaw = l;
-    matrixStack.pop();
+    matrixStack.popMatrix();
     matrixStack2.pop();
     RenderSystem.applyModelViewMatrix();
     DiffuseLighting.enableGuiDepthLighting();
