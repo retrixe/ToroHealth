@@ -2,8 +2,8 @@ package net.torocraft.torohealth.display;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.DiffuseLighting;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -33,10 +33,10 @@ public class EntityDisplay {
     updateScale();
   }
 
-  public void draw(MatrixStack matrix, float scale) {
+  public void draw(DrawContext drawContext, MatrixStack matrix, float scale) {
     if (entity != null) {
       try {
-        drawEntity(matrix, (int) xOffset, (int) yOffset, entityScale, -80, -20, entity, scale);
+        drawEntity(drawContext, matrix, (int) xOffset, (int) yOffset, entityScale, -80, -20, entity, scale);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -71,15 +71,14 @@ public class EntityDisplay {
   /**
    * copied from InventoryScreen.drawEntity() to expose the matrixStack
    */
-  public static void drawEntity(MatrixStack matrixStack2, int x, int y, int size, float mouseX,
-      float mouseY, LivingEntity entity, float scale) {
+  public static void drawEntity(DrawContext drawContext, MatrixStack matrixStack2, int x, int y, int size,
+      float mouseX, float mouseY, LivingEntity entity, float scale) {
     float f = (float) Math.atan((double) (mouseX / 40.0F));
     float g = (float) Math.atan((double) (mouseY / 40.0F));
     Matrix4fStack matrixStack = RenderSystem.getModelViewStack();
     matrixStack.pushMatrix();
     matrixStack.translate(x * scale, y * scale, 1050.0F * scale);
     matrixStack.scale(1.0F, 1.0F, -1.0F);
-    RenderSystem.applyModelViewMatrix();
     matrixStack2.push();
     matrixStack2.translate(0.0D, 0.0D, 1000.0D);
     matrixStack2.scale((float) size, (float) size, (float) size);
@@ -102,13 +101,10 @@ public class EntityDisplay {
     quaternion2.conjugate();
     entityRenderDispatcher.setRotation(quaternion2);
     entityRenderDispatcher.setRenderShadows(false);
-    VertexConsumerProvider.Immediate immediate =
-        MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-    RenderSystem.runAsFancy(() -> {
-      entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack2, immediate,
-          15728880);
+    drawContext.draw(vertexConsumerProvider -> {
+      entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 1.0F, matrixStack2,
+              vertexConsumerProvider, 15728880);
     });
-    immediate.draw();
     entityRenderDispatcher.setRenderShadows(true);
     entity.bodyYaw = h;
     entity.setYaw(i);
@@ -117,7 +113,6 @@ public class EntityDisplay {
     entity.headYaw = l;
     matrixStack.popMatrix();
     matrixStack2.pop();
-    RenderSystem.applyModelViewMatrix();
     DiffuseLighting.enableGuiDepthLighting();
   }
 

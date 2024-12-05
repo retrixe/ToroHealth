@@ -31,7 +31,9 @@ public class BarDisplay {
     RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
     RenderSystem.enableBlend();
 
-    HealthBarRenderer.render(drawContext.getMatrices(), drawContext.getVertexConsumers(), entity, 63, 14, 130, false);
+    drawContext.draw(vertexConsumerProvider -> {
+      HealthBarRenderer.render(drawContext.getMatrices(), vertexConsumerProvider, entity, 63, 14, 130, false);
+    });
     String name = getEntityName(entity);
     int healthMax = MathHelper.ceil(entity.getMaxHealth());
     int healthCur = Math.min(MathHelper.ceil(entity.getHealth()), healthMax);

@@ -118,7 +118,7 @@ public class Hud extends Screen {
     }
     matrix.translate(10, 10, 0);
     if (config.hud.showEntity) {
-      entityDisplay.draw(matrix, scale);
+      entityDisplay.draw(drawContext, matrix, scale);
     }
     matrix.translate(44, 0, 0);
     if (config.hud.showBar) {
