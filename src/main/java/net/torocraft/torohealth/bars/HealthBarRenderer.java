@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexFormat;
@@ -91,7 +91,7 @@ public class HealthBarRenderer {
       return;
     }
 
-    RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+    RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
     RenderSystem.enableDepthTest();
     RenderSystem.enableBlend();
     RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE,
@@ -193,7 +193,7 @@ public class HealthBarRenderer {
     float b = (color & 255) / 255.0F;
 
     RenderSystem.setShaderColor(r, g, b, 1);
-    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+    RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
     RenderSystem.setShaderTexture(0, GUI_BARS_TEXTURES);
     RenderSystem.enableBlend();
 

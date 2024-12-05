@@ -2,8 +2,8 @@ package net.torocraft.torohealth.bars;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
@@ -46,7 +46,7 @@ public class ParticleRenderer {
     matrix.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
     matrix.scale(-scaleToGui, -scaleToGui, scaleToGui);
 
-    RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+    RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
     RenderSystem.enableDepthTest();
     RenderSystem.enableBlend();
     RenderSystem.blendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE,

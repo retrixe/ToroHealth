@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.*;
@@ -129,6 +130,6 @@ public class Hud extends Screen {
   private void drawSkin(DrawContext drawContext) {
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     int w = 160, h = 60;
-    drawContext.drawTexture(BACKGROUND_TEXTURE, 0, 0, 0.0f, 0.0f, w, h, w, h);
+    drawContext.drawTexture(RenderLayer::getGuiTextured, BACKGROUND_TEXTURE, 0, 0, 0.0f, 0.0f, w, h, w, h);
   }
 }

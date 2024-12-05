@@ -2,8 +2,9 @@ package net.torocraft.torohealth.display;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -27,7 +28,7 @@ public class BarDisplay {
     int xOffset = 0;
 
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-    RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+    RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
     RenderSystem.enableBlend();
 
     HealthBarRenderer.render(drawContext.getMatrices(), drawContext.getVertexConsumers(), entity, 63, 14, 130, false);
@@ -58,10 +59,10 @@ public class BarDisplay {
   }
 
   private void renderArmorIcon(DrawContext drawContext, int x, int y) {
-    drawContext.drawGuiTexture(ARMOR_TEXTURE, x, y, 9, 9);
+    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, ARMOR_TEXTURE, x, y, 9, 9);
   }
 
   private void renderHeartIcon(DrawContext drawContext, int x, int y) {
-    drawContext.drawGuiTexture(HEART_TEXTURE, x, y, 9, 9);
+    drawContext.drawGuiTexture(RenderLayer::getGuiTextured, HEART_TEXTURE, x, y, 9, 9);
   }
 }
