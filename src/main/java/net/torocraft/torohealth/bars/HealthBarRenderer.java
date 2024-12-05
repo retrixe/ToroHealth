@@ -173,7 +173,7 @@ public class HealthBarRenderer {
     minecraft.textRenderer.draw(
             s, (float) (x + (width / 2) - sw), (float) y + 5, color, false,
             matrix.peek().getPositionMatrix(), vertexConsumerProvider,
-            TextRenderer.TextLayerType.NORMAL, 0, 0);
+            TextRenderer.TextLayerType.NORMAL, 0, 15728880);
   }
 
   private static void drawBar(Matrix4f matrix4f, double x, double y, float width, float percent,
